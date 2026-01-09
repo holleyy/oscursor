@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oscar Sweepstakes 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 OSCAR SWEEPSTAKES 2026 🎬</h1>
+        </header>
+
+        <!-- User Selection Section -->
+        <section class="user-section">
+            <div class="user-input">
+                <input type="text" id="userNameInput" placeholder="Enter your name..." maxlength="20">
+                <button id="addUserBtn">Add User</button>
+            </div>
+            <div class="user-select">
+                <label for="userSelect">Select User:</label>
+                <select id="userSelect">
+                    <option value="">-- Select a user --</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <button class="nav-btn active" data-view="predictions">Make Predictions</button>
+            <button class="nav-btn" data-view="results">View Results</button>
+            <button class="nav-btn" data-view="winners">Enter Winners</button>
+        </nav>
+
+        <!-- Predictions View -->
+        <section id="predictionsView" class="view active">
+            <h2>Make Your Predictions</h2>
+            <div id="predictionsContainer"></div>
+        </section>
+
+        <!-- Results View -->
+        <section id="resultsView" class="view">
+            <h2>Results Comparison</h2>
+            <div id="resultsContainer"></div>
+        </section>
+
+        <!-- Winners Input View -->
+        <section id="winnersView" class="view">
+            <h2>Enter Actual Winners</h2>
+            <div id="winnersContainer"></div>
+            <button id="saveWinnersBtn" class="save-btn">Save Winners</button>
+        </section>
+    </div>
+
+    <!-- Firebase Config (you'll need to add your config here) -->
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

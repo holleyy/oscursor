@@ -1,0 +1,16 @@
+# Firebase config (optional - you might want to keep this private)
+# firebase-config.js
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log

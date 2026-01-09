@@ -11,10 +11,15 @@ const firebaseConfig = {
     storageBucket: "oscarbb-ec8f9.firebasestorage.app",
     messagingSenderId: "919577545208",
     appId: "1:919577545208:web:fbee83cb5c4a7405066e0d"
-  };
+};
 
 // Initialize Firebase (using compat SDK)
+// Note: firebase variable should be available from firebase-app-compat.js
+if (typeof firebase === 'undefined') {
+    console.error('Firebase SDK not loaded. Make sure firebase-app-compat.js and firebase-database-compat.js are loaded before this script.');
+}
+
 firebase.initializeApp(firebaseConfig);
 
-// Get reference to the database
+// Get reference to the database (must be in global scope for script.js)
 const database = firebase.database();

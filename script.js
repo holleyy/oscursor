@@ -117,6 +117,11 @@ const oscarCategories = {
 
 // Helper function to format nominee display
 function formatNominee(nominee) {
+    // Handle serialized "name|||film" strings
+    if (typeof nominee === 'string' && nominee.includes('|||')) {
+        const [name, film] = nominee.split('|||');
+        return film ? `${name} (${film})` : name;
+    }
     if (typeof nominee === 'string') {
         return nominee;
     } else if (nominee && nominee.name && nominee.film) {
@@ -130,7 +135,8 @@ function getNomineeValue(nominee) {
     if (typeof nominee === 'string') {
         return nominee;
     } else if (nominee && nominee.name && nominee.film) {
-        return JSON.stringify(nominee); // Store as JSON string for comparison
+        // Stable, order-independent string for objects
+        return `${nominee.name}|||${nominee.film}`;
     }
     return String(nominee);
 }
@@ -138,9 +144,25 @@ function getNomineeValue(nominee) {
 // Helper function to compare two nominees (handles both strings and objects)
 function compareNominees(nominee1, nominee2) {
     if (!nominee1 || !nominee2) return false;
-    const val1 = typeof nominee1 === 'string' ? nominee1 : JSON.stringify(nominee1);
-    const val2 = typeof nominee2 === 'string' ? nominee2 : JSON.stringify(nominee2);
+    const val1 = getNomineeValue(nominee1);
+    const val2 = getNomineeValue(nominee2);
     return val1 === val2;
+}
+
+// Helper to extract film name from a nominee (for film-based views)
+function getFilmFromNominee(nominee) {
+    if (!nominee) return null;
+    if (typeof nominee === 'string' && nominee.includes('|||')) {
+        const parts = nominee.split('|||');
+        return parts[1] || parts[0];
+    }
+    if (typeof nominee === 'string') {
+        return nominee;
+    }
+    if (nominee && nominee.film) {
+        return nominee.film;
+    }
+    return formatNominee(nominee);
 }
 
 // Data Storage (loaded from Firebase)
@@ -158,6 +180,11 @@ const predictionsContainer = document.getElementById('predictionsContainer');
 const resultsContainer = document.getElementById('resultsContainer');
 const winnersContainer = document.getElementById('winnersContainer');
 const saveWinnersBtn = document.getElementById('saveWinnersBtn');
+const viewPredictionsContainer = document.getElementById('viewPredictionsContainer');
+const viewPredictionsSort = document.getElementById('viewPredictionsSort');
+const viewPredictionsPickToggle = document.getElementById('viewPredictionsPickToggle');
+const viewPredictionsPickButtons = document.querySelectorAll('.view-pick-btn');
+let viewPredictionsPickType = 'should';
 
 // Initialize - Load data from Firebase
 async function init() {
@@ -216,6 +243,7 @@ function setupFirebaseListeners() {
         predictions = snapshot.val() || {};
         if (userSelect.value) {
             renderPredictions(userSelect.value);
+            renderViewPredictions();
         }
     });
     
@@ -238,6 +266,22 @@ function setupEventListeners() {
         btn.addEventListener('click', () => switchView(btn.dataset.view));
     });
     saveWinnersBtn.addEventListener('click', saveWinners);
+    if (viewPredictionsSort) {
+        viewPredictionsSort.addEventListener('change', () => {
+            renderViewPredictions();
+        });
+    }
+    if (viewPredictionsPickButtons.length > 0) {
+        viewPredictionsPickButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pickType = btn.dataset.pick;
+                if (!pickType || pickType === viewPredictionsPickType) return;
+                viewPredictionsPickType = pickType;
+                updateViewPickToggleState();
+                renderViewPredictions();
+            });
+        });
+    }
 }
 
 // User Management
@@ -273,6 +317,7 @@ function onUserSelect() {
     const selectedUser = userSelect.value;
     if (selectedUser) {
         renderPredictions(selectedUser);
+        renderViewPredictions();
         renderResults();
     }
 }
@@ -357,15 +402,15 @@ function renderPredictions(selectedUser = null) {
             // Check if this nominee matches the stored prediction
             const storedShouldWin = predictions[user][category]?.shouldWin;
             if (storedShouldWin) {
-                const storedValue = typeof storedShouldWin === 'string' ? storedShouldWin : JSON.stringify(storedShouldWin);
+                const storedValue = getNomineeValue(storedShouldWin);
                 if (storedValue === nomineeValue) {
                     shouldWinRadio.checked = true;
                 }
             }
             shouldWinRadio.addEventListener('change', async () => {
                 try {
-                    // Store the original nominee object/string in Firebase
-                    await database.ref(`predictions/${user}/${category}/shouldWin`).set(nominee);
+                    // Store stable string value in Firebase
+                    await database.ref(`predictions/${user}/${category}/shouldWin`).set(nomineeValue);
                 } catch (error) {
                     console.error('Error saving prediction:', error);
                     alert('Error saving prediction. Please try again.');
@@ -385,15 +430,15 @@ function renderPredictions(selectedUser = null) {
             // Check if this nominee matches the stored prediction
             const storedWillWin = predictions[user][category]?.willWin;
             if (storedWillWin) {
-                const storedValue = typeof storedWillWin === 'string' ? storedWillWin : JSON.stringify(storedWillWin);
+                const storedValue = getNomineeValue(storedWillWin);
                 if (storedValue === nomineeValue) {
                     willWinRadio.checked = true;
                 }
             }
             willWinRadio.addEventListener('change', async () => {
                 try {
-                    // Store the original nominee object/string in Firebase
-                    await database.ref(`predictions/${user}/${category}/willWin`).set(nominee);
+                    // Store stable string value in Firebase
+                    await database.ref(`predictions/${user}/${category}/willWin`).set(nomineeValue);
                 } catch (error) {
                     console.error('Error saving prediction:', error);
                     alert('Error saving prediction. Please try again.');
@@ -407,6 +452,159 @@ function renderPredictions(selectedUser = null) {
         
         categoryCard.appendChild(table);
         predictionsContainer.appendChild(categoryCard);
+    });
+}
+
+// View Predictions (read-only)
+function renderViewPredictions() {
+    if (!viewPredictionsContainer) return;
+
+    const user = userSelect.value;
+    if (!user) {
+        viewPredictionsContainer.innerHTML = '<p>Please select a user first.</p>';
+        return;
+    }
+
+    if (!predictions[user]) {
+        viewPredictionsContainer.innerHTML = '<p>No predictions found for this user yet.</p>';
+        return;
+    }
+
+    const sortMode = viewPredictionsSort ? viewPredictionsSort.value : 'award';
+    updateViewPickToggleVisibility(sortMode);
+
+    if (sortMode === 'film') {
+        renderViewPredictionsByFilm(user, viewPredictionsPickType);
+    } else {
+        renderViewPredictionsByAward(user);
+    }
+}
+
+function renderViewPredictionsByAward(user) {
+    viewPredictionsContainer.innerHTML = '';
+
+    const table = document.createElement('table');
+    table.className = 'view-predictions-table';
+
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    headerRow.innerHTML = '<th>Award</th><th>Should Win</th><th>Will Win</th>';
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+
+    Object.keys(oscarCategories).forEach(category => {
+        const userPred = predictions[user][category] || {};
+        const row = document.createElement('tr');
+
+        const awardCell = document.createElement('td');
+        awardCell.textContent = category;
+        row.appendChild(awardCell);
+
+        const shouldCell = document.createElement('td');
+        shouldCell.textContent = userPred.shouldWin ? formatNominee(userPred.shouldWin) : '—';
+        row.appendChild(shouldCell);
+
+        const willCell = document.createElement('td');
+        willCell.textContent = userPred.willWin ? formatNominee(userPred.willWin) : '—';
+        row.appendChild(willCell);
+
+        tbody.appendChild(row);
+    });
+
+    table.appendChild(tbody);
+    viewPredictionsContainer.appendChild(table);
+}
+
+function renderViewPredictionsByFilm(user, pickType) {
+    viewPredictionsContainer.innerHTML = '';
+
+    // Aggregate by film
+    const filmMap = {};
+    const isShould = pickType === 'should';
+    const pickLabel = isShould ? 'Should Win' : 'Will Win';
+
+    Object.keys(oscarCategories).forEach(category => {
+        const userPred = predictions[user][category];
+        if (!userPred) return;
+        const pickValue = isShould ? userPred.shouldWin : userPred.willWin;
+        if (!pickValue) return;
+        const filmName = getFilmFromNominee(pickValue);
+        if (!filmName) return;
+        if (!filmMap[filmName]) {
+            filmMap[filmName] = {
+                count: 0,
+                categories: new Set()
+            };
+        }
+        filmMap[filmName].count += 1;
+        filmMap[filmName].categories.add(category);
+    });
+
+    const films = Object.keys(filmMap);
+    if (films.length === 0) {
+        viewPredictionsContainer.innerHTML = `<p>No ${pickLabel.toLowerCase()} predictions yet to sort by film.</p>`;
+        return;
+    }
+
+    // Sort films by picks, descending
+    films.sort((a, b) => {
+        const totalA = filmMap[a].count;
+        const totalB = filmMap[b].count;
+        if (totalB !== totalA) return totalB - totalA;
+        return a.localeCompare(b);
+    });
+
+    const table = document.createElement('table');
+    table.className = 'view-predictions-table';
+
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    headerRow.innerHTML = `<th>Film</th><th>${pickLabel} Picks</th><th>Categories</th>`;
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+
+    films.forEach(film => {
+        const data = filmMap[film];
+        const row = document.createElement('tr');
+
+        const filmCell = document.createElement('td');
+        filmCell.textContent = film;
+        row.appendChild(filmCell);
+
+        const pickCell = document.createElement('td');
+        pickCell.textContent = data.count;
+        row.appendChild(pickCell);
+
+        const categoriesCell = document.createElement('td');
+        categoriesCell.textContent = Array.from(data.categories).join(', ');
+        row.appendChild(categoriesCell);
+
+        tbody.appendChild(row);
+    });
+
+    table.appendChild(tbody);
+    viewPredictionsContainer.appendChild(table);
+}
+
+function updateViewPickToggleVisibility(sortMode) {
+    if (!viewPredictionsPickToggle) return;
+    if (sortMode === 'film') {
+        viewPredictionsPickToggle.classList.add('is-visible');
+    } else {
+        viewPredictionsPickToggle.classList.remove('is-visible');
+    }
+}
+
+function updateViewPickToggleState() {
+    if (viewPredictionsPickButtons.length === 0) return;
+    viewPredictionsPickButtons.forEach(btn => {
+        const isActive = btn.dataset.pick === viewPredictionsPickType;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
 }
 

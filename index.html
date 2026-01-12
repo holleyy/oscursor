@@ -32,6 +32,7 @@
         <!-- Navigation -->
         <nav class="main-nav">
             <button class="nav-btn active" data-view="predictions">Make Predictions</button>
+            <button class="nav-btn" data-view="viewPredictions">View Predictions</button>
             <button class="nav-btn" data-view="results">View Results</button>
             <button class="nav-btn" data-view="winners">Enter Winners</button>
         </nav>
@@ -40,6 +41,27 @@
         <section id="predictionsView" class="view active">
             <h2>Make Your Predictions</h2>
             <div id="predictionsContainer"></div>
+        </section>
+
+        <!-- View Predictions (Read-Only) -->
+        <section id="viewPredictionsView" class="view">
+            <h2>View Predictions</h2>
+            <div class="view-controls">
+                <label for="viewPredictionsSort">Sort by:</label>
+                <select id="viewPredictionsSort">
+                    <option value="award">Award</option>
+                    <option value="film">Film</option>
+                </select>
+                <div id="viewPredictionsPickToggle" class="view-pick-toggle" aria-label="Prediction type">
+                    <span class="toggle-label">Show:</span>
+                    <div class="toggle-buttons" role="group" aria-label="Prediction type">
+                        <button type="button" class="toggle-btn view-pick-btn active" data-pick="should" aria-pressed="true">Should Win</button>
+                        <button type="button" class="toggle-btn view-pick-btn" data-pick="will" aria-pressed="false">Will Win</button>
+                    </div>
+                </div>
+                <span class="view-note">Select a user above to see their predictions.</span>
+            </div>
+            <div id="viewPredictionsContainer"></div>
         </section>
 
         <!-- Results View -->

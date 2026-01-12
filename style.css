@@ -142,6 +142,70 @@ button:active {
     display: block;
 }
 
+/* View Predictions controls */
+.view-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #0f3460;
+    border: 2px solid #533483;
+}
+
+.view-controls label {
+    font-weight: bold;
+}
+
+.view-controls select {
+    max-width: 200px;
+}
+
+.view-pick-toggle {
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+
+.view-pick-toggle.is-visible {
+    display: flex;
+}
+
+.toggle-label {
+    font-weight: bold;
+}
+
+.toggle-buttons {
+    display: flex;
+    border: 2px solid #533483;
+    background: #1a1a2e;
+}
+
+.toggle-btn {
+    background: transparent;
+    color: #eee;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.toggle-btn.active {
+    background: #e94560;
+    color: #fff;
+}
+
+.toggle-btn:focus {
+    outline: 2px solid #e94560;
+    outline-offset: 2px;
+}
+
+.view-note {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
 /* Category Cards */
 .category-card {
     background: #0f3460;
@@ -199,6 +263,29 @@ button:active {
     height: 20px;
     cursor: pointer;
     accent-color: #e94560;
+}
+
+/* View Predictions table */
+.view-predictions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.view-predictions-table th,
+.view-predictions-table td {
+    padding: 10px;
+    border: 2px solid #533483;
+}
+
+.view-predictions-table th {
+    background: #0f3460;
+    color: #e94560;
+    font-weight: bold;
+}
+
+.view-predictions-table tr:nth-child(even) {
+    background: #16213e;
 }
 
 /* Results View */

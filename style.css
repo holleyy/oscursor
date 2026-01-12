@@ -359,6 +359,99 @@ button:active {
     font-size: 20px;
 }
 
+/* Film Guide */
+.film-intro {
+    margin-bottom: 15px;
+    padding: 10px 12px;
+    background: #0f3460;
+    border: 2px solid #533483;
+}
+
+.film-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.film-stats {
+    margin-bottom: 15px;
+    padding: 10px 12px;
+    background: #0f3460;
+    border: 2px solid #533483;
+    font-weight: bold;
+}
+
+.film-card {
+    background: #0f3460;
+    border: 3px solid #533483;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.film-title {
+    font-size: 1.2em;
+    color: #e94560;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.film-description {
+    line-height: 1.4;
+}
+
+.film-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.film-rating {
+    font-weight: bold;
+    color: #4ade80;
+}
+
+.film-link {
+    color: #e94560;
+    font-weight: bold;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+}
+
+.film-link:hover {
+    border-bottom-color: #e94560;
+}
+
+.film-card.is-watched {
+    background: #123326;
+    border-color: #2f8f5b;
+}
+
+.film-card.is-watched .film-title {
+    color: #8cf0a4;
+}
+
+.film-card.is-watched .film-description {
+    color: #d9f7e4;
+}
+
+.film-card.is-watched .film-rating {
+    color: #facc15;
+}
+
+.film-card.is-watched .film-link {
+    color: #8cf0a4;
+    border-bottom-color: #8cf0a4;
+}
+
+.film-card.is-disabled {
+    cursor: default;
+    opacity: 0.85;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .prediction-row {

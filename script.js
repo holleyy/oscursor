@@ -169,6 +169,7 @@ function getFilmFromNominee(nominee) {
 let users = [];
 let predictions = {};
 let actualWinners = {};
+let watchedFilms = {};
 
 // DOM Elements
 const userNameInput = document.getElementById('userNameInput');
@@ -185,6 +186,17 @@ const viewPredictionsSort = document.getElementById('viewPredictionsSort');
 const viewPredictionsPickToggle = document.getElementById('viewPredictionsPickToggle');
 const viewPredictionsPickButtons = document.querySelectorAll('.view-pick-btn');
 let viewPredictionsPickType = 'should';
+const filmCards = document.querySelectorAll('.film-card');
+const watchedCount = document.getElementById('watchedCount');
+
+function encodeFilmKey(title) {
+    return encodeURIComponent(title).replace(/\./g, '%2E');
+}
+
+function getFilmTitle(card) {
+    const titleEl = card.querySelector('.film-title');
+    return titleEl ? titleEl.textContent.trim() : '';
+}
 
 // Initialize - Load data from Firebase
 async function init() {
@@ -200,6 +212,7 @@ async function init() {
     updateUserSelect();
     renderPredictions();
     renderWinnersInput();
+    renderWatchedFilms();
     setupFirebaseListeners();
 }
 
@@ -220,12 +233,18 @@ async function loadDataFromFirebase() {
         const winnersSnapshot = await database.ref('winners').once('value');
         const winnersData = winnersSnapshot.val();
         actualWinners = winnersData || {};
+
+        // Load watched films
+        const watchedSnapshot = await database.ref('watched').once('value');
+        const watchedData = watchedSnapshot.val();
+        watchedFilms = watchedData || {};
     } catch (error) {
         console.error('Error loading data from Firebase:', error);
         // Fallback to empty data if Firebase fails
         users = [];
         predictions = {};
         actualWinners = {};
+        watchedFilms = {};
     }
 }
 
@@ -252,6 +271,12 @@ function setupFirebaseListeners() {
         actualWinners = snapshot.val() || {};
         renderWinnersInput();
         renderResults();
+    });
+
+    // Listen for watched updates
+    database.ref('watched').on('value', (snapshot) => {
+        watchedFilms = snapshot.val() || {};
+        renderWatchedFilms();
     });
 }
 
@@ -282,6 +307,8 @@ function setupEventListeners() {
             });
         });
     }
+
+    setupFilmCardListeners();
 }
 
 // User Management
@@ -320,6 +347,51 @@ function onUserSelect() {
         renderViewPredictions();
         renderResults();
     }
+    renderWatchedFilms(selectedUser);
+}
+
+function setupFilmCardListeners() {
+    if (filmCards.length === 0) return;
+    filmCards.forEach(card => {
+        card.addEventListener('click', async () => {
+            const user = userSelect.value;
+            if (!user) {
+                return;
+            }
+            const title = getFilmTitle(card);
+            if (!title) return;
+            const key = encodeFilmKey(title);
+            const userWatched = watchedFilms[user] || {};
+            const isWatched = !!userWatched[key];
+            try {
+                if (isWatched) {
+                    await database.ref(`watched/${user}/${key}`).remove();
+                } else {
+                    await database.ref(`watched/${user}/${key}`).set(true);
+                }
+            } catch (error) {
+                console.error('Error updating watched films:', error);
+                alert('Error updating watched status. Please try again.');
+            }
+        });
+    });
+}
+
+function renderWatchedFilms(selectedUser = null) {
+    if (filmCards.length === 0 || !watchedCount) return;
+    const user = selectedUser || userSelect.value;
+    const hasUser = !!user;
+    const total = filmCards.length;
+    let count = 0;
+    filmCards.forEach(card => {
+        const title = getFilmTitle(card);
+        const watched = user && watchedFilms[user] && watchedFilms[user][encodeFilmKey(title)];
+        card.classList.toggle('is-watched', !!watched);
+        card.classList.toggle('is-disabled', !hasUser);
+        if (watched) count += 1;
+    });
+    const percent = total ? Math.round((count / total) * 100) : 0;
+    watchedCount.textContent = `${hasUser ? count : 0} / ${total} (${hasUser ? percent : 0}%)`;
 }
 
 // View Switching

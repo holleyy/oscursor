@@ -35,6 +35,7 @@
             <button class="nav-btn" data-view="viewPredictions">View Predictions</button>
             <button class="nav-btn" data-view="results">View Results</button>
             <button class="nav-btn" data-view="winners">Enter Winners</button>
+            <button class="nav-btn" data-view="films">Film Guide</button>
         </nav>
 
         <!-- Predictions View -->
@@ -75,6 +76,271 @@
             <h2>Enter Actual Winners</h2>
             <div id="winnersContainer"></div>
             <button id="saveWinnersBtn" class="save-btn">Save Winners</button>
+        </section>
+
+        <!-- Films View -->
+        <section id="filmsView" class="view">
+            <h2>Film Guide</h2>
+            <p class="film-intro">The film slate, with descriptions and Letterboxd links. Select a user to log films watched by clicking a card.</p>
+            <div class="film-stats">Watched: <span id="watchedCount">0 / 0</span></div>
+            <div class="film-grid">
+                <article class="film-card">
+                    <h3 class="film-title">One Battle After Another</h3>
+                    <p class="film-description">A simmering war epic tracking veterans who reunite for one final mission.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 4.1/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/one-battle-after-another/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Hamnet</h3>
+                    <p class="film-description">A tender period drama about grief, memory, and the cost of genius.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 4.3/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/hamnet/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Sinners</h3>
+                    <p class="film-description">A violent Southern noir where faith and revenge collide.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 4.0/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/sinners-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Frankenstein</h3>
+                    <p class="film-description">A gothic reinvention that leans into the horror of creation.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 4.2/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/frankenstein-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Wicked: For Good</h3>
+                    <p class="film-description">The musical finale lands with spectacle, heartbreak, and spectacle again.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.8/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/wicked-for-good/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">F1</h3>
+                    <p class="film-description">A high-speed drama about legacy, rivalry, and the cost of perfection.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.7/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/f1/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Bugonia</h3>
+                    <p class="film-description">A surreal sci-fi caper spiraling into paranoia and cosmic dread.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.9/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/bugonia/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Jay Kelly</h3>
+                    <p class="film-description">A bruising character study of a comedian chasing one last tour.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.6/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/jay-kelly/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Sentimental Value</h3>
+                    <p class="film-description">An intimate family drama about art, inheritance, and second chances.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 4.1/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/sentimental-value-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Marty Supreme</h3>
+                    <p class="film-description">A glossy rise-and-fall biopic of a brilliant but reckless icon.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.5/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/marty-supreme/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Blue Moon</h3>
+                    <p class="film-description">A moonlit neo-noir where every promise comes with a shadow.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.6/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/blue-moon-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Train Dreams</h3>
+                    <p class="film-description">A lyrical American odyssey across forests, rails, and heartbreak.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 4.0/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/train-dreams/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">The Testament of Ann Lee</h3>
+                    <p class="film-description">A devotional historical drama about belief, exile, and power.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.7/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/the-testament-of-ann-lee/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Song Sung Blue</h3>
+                    <p class="film-description">A bittersweet jukebox romance set against a touring band.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.4/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/song-sung-blue-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Weapons</h3>
+                    <p class="film-description">A chilling ensemble thriller about a town unraveling overnight.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.8/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/weapons-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Sorry, Baby</h3>
+                    <p class="film-description">A sharp, intimate comedy about friendship and the chaos of healing.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.6/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/sorry-baby-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">No Other Choice</h3>
+                    <p class="film-description">A slow-burn thriller about survival in a system built to fail.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.7/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/no-other-choice-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">KPop Demon Hunters</h3>
+                    <p class="film-description">Animated chaos as idol stars moonlight as supernatural slayers.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.5/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/kpop-demon-hunters/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Zootopia 2</h3>
+                    <p class="film-description">The buddy-cop duo returns to tackle a new city-wide mystery.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.8/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/zootopia-2/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Arco</h3>
+                    <p class="film-description">A poetic animated adventure about a girl who bends time.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.9/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/arco/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Little Amelie</h3>
+                    <p class="film-description">A coming-of-age tale told through a child’s glittering imagination.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.7/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/little-amelie-or-the-character-of-rain/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Elio</h3>
+                    <p class="film-description">A lonely kid is mistaken for Earth’s ambassador to the stars.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.8/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/elio/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Demon Slayer: Kimetsu no Yaiba Infinity Castle</h3>
+                    <p class="film-description">Stylized animation and swordplay push the saga to new heights.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 4.0/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/demon-slayer-kimetsu-no-yaiba-infinity-castle/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Cover-Up</h3>
+                    <p class="film-description">A gripping documentary about truth, power, and the cost of silence.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.9/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/cover-up-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">2000 Meters to Andriivka</h3>
+                    <p class="film-description">Frontline reporting captured with devastating intimacy.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 4.2/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/2000-meters-to-andriivka/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">The Perfect Neighbor</h3>
+                    <p class="film-description">A quiet community portrait that slowly reveals a darker truth.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.8/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/the-perfect-neighbour/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">The Librarians</h3>
+                    <p class="film-description">An ode to public institutions and the people who defend them.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.7/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/the-librarians-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Sirât</h3>
+                    <p class="film-description">A spiritual road movie that drifts between faith and folklore.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.9/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/sirat-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">The Secret Agent</h3>
+                    <p class="film-description">A spy thriller built on hushed tension and double meanings.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.8/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/the-secret-agent-2025/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">The Voice of Hind...</h3>
+                    <p class="film-description">A documentary weaving testimony and archival memory.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.6/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/the-voice-of-hind-rajab/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Downton Abbey: The Grand...</h3>
+                    <p class="film-description">An opulent farewell tour of old estates and new tensions.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.5/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/downton-abbey-the-grand-finale/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+                <article class="film-card">
+                    <h3 class="film-title">Warfare</h3>
+                    <p class="film-description">A boots-on-the-ground chronicle of modern combat and consequence.</p>
+                    <div class="film-meta">
+                        <span class="film-rating">Rating: 3.7/5</span>
+                        <a class="film-link" href="https://letterboxd.com/film/warfare/" target="_blank" rel="noopener">Letterboxd</a>
+                    </div>
+                </article>
+            </div>
         </section>
     </div>
 
